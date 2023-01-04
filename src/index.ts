@@ -1,17 +1,23 @@
 import express from 'express';
 import { Server } from 'socket.io';
-import * as http from "http";
+import * as https from "https";
 import { readFileSync } from 'fs';
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
+import * as fs from "fs";
 
 const app = express();
 
-const server = http.createServer(app);
+const options = {
+  key: fs.readFileSync(join(__dirname, 'key.pem')),
+  cert: fs.readFileSync(join(__dirname, 'cert.pem'))
+};
+
+const server = https.createServer(options, app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://192.168.0.113:3000",
+    origin: "https://192.168.0.113:3000",
     methods: ["GET", "POST"]
   }
 });
@@ -83,7 +89,7 @@ io.on('connection', socket => {
   });
 });
 
-server.listen(5000);
+server.listen(8000);
 
 
-console.log('server http is running on 5000');
+console.log('server http is running on 8000');

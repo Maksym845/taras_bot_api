@@ -28,15 +28,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const socket_io_1 = require("socket.io");
-const http = __importStar(require("http"));
+const https = __importStar(require("https"));
 const fs_1 = require("fs");
 const fs_2 = require("fs");
 const path_1 = require("path");
+const fs = __importStar(require("fs"));
 const app = (0, express_1.default)();
-const server = http.createServer(app);
+const options = {
+    key: fs.readFileSync((0, path_1.join)(__dirname, 'key.pem')),
+    cert: fs.readFileSync((0, path_1.join)(__dirname, 'cert.pem'))
+};
+const server = https.createServer(options, app);
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "http://192.168.0.113:3000",
+        origin: "https://192.168.0.113:3000",
         methods: ["GET", "POST"]
     }
 });
@@ -89,6 +94,6 @@ io.on('connection', socket => {
         io.sockets.emit('messageWasReceived', contentFromDb);
     });
 });
-server.listen(5000);
-console.log('server http is running on 5000');
+server.listen(8000);
+console.log('server http is running on 8000');
 //# sourceMappingURL=index.js.map
