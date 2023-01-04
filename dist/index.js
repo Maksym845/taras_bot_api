@@ -41,7 +41,7 @@ const options = {
 const server = https.createServer(options, app);
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "https://192.168.0.113:3000",
+        origin: "https://165.232.66.68:8000/socket.io/?EIO=4&transport=polling&t=OLyKj30",
         methods: ["GET", "POST"]
     }
 });
